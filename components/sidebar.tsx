@@ -14,6 +14,7 @@ import {
   Trash2,
   Moon,
   Sun,
+  Settings,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -23,6 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SettingsModal } from "./settings-modal";
 
 interface SidebarProps {
   user?: {
@@ -68,6 +70,7 @@ export function Sidebar({ user, className = "" }: SidebarProps) {
   const { theme, setTheme } = useTheme();
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
     async function fetchHistory() {
@@ -220,11 +223,25 @@ export function Sidebar({ user, className = "" }: SidebarProps) {
         </div>
       </nav>
 
+      {/* Settings Section */}
+      <div className="p-3 border-t border-sidebar-border">
+        <button
+          onClick={() => setIsSettingsOpen(true)}
+          className="w-full flex items-center gap-2.5 px-2 py-2 text-left hover:bg-sidebar-accent transition-colors rounded-md"
+        >
+          <Settings className="w-4 h-4 text-muted-foreground" />
+          <div>
+            <div className="text-sm font-medium">Settings</div>
+            <div className="text-[11px] text-muted-foreground">Manage API keys</div>
+          </div>
+        </button>
+      </div>
+
       {/* User */}
       {user && (
         <div className="p-3 border-t border-sidebar-border">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger >
               <button className="flex items-center gap-2.5 px-2 w-full hover:bg-sidebar-accent transition-colors rounded-md py-1.5 outline-none">
                 {user.image ? (
                   <Image
@@ -268,6 +285,9 @@ export function Sidebar({ user, className = "" }: SidebarProps) {
           </DropdownMenu>
         </div>
       )}
+
+      {/* Settings Modal */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </aside>
   );
 }

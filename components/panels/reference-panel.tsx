@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Loader2, ArrowRight, ImageIcon, X } from "lucide-react";
+import { Loader2, ArrowRight, Upload, X } from "lucide-react";
 import Image from "next/image";
 
 interface ReferencePanelProps {
@@ -75,48 +75,47 @@ export function ReferencePanel({ onGenerate }: ReferencePanelProps) {
         </p>
       </div>
 
-      {/* Reference Upload */}
-      <div className="space-y-1.5">
-        <label className="text-sm font-medium">Reference Thumbnail</label>
-
-        {referenceImage ? (
-          <div className="relative aspect-video bg-muted group">
-            <Image src={referenceImage} alt="Reference" fill className="object-cover" />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-              <button
-                onClick={() => { URL.revokeObjectURL(referenceImage); setReferenceImage(null); }}
-                className="w-8 h-8 bg-white text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+      {/* Upload Area - Same as Image Composer */}
+      <div
+        onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+        onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
+        onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFile(e.dataTransfer.files); }}
+        className={`
+          relative border-2 border-dashed p-5 text-center transition-colors cursor-pointer
+          ${isDragging ? "border-primary bg-primary/5" : "border-input hover:border-foreground/30"}
+        `}
+      >
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFile(e.target.files)}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        />
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-10 h-10 bg-muted flex items-center justify-center">
+            <Upload className="w-4 h-4 text-muted-foreground" />
           </div>
-        ) : (
-          <div
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
-            onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFile(e.dataTransfer.files); }}
-            className={`
-              relative aspect-video border-2 border-dashed flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors
-              ${isDragging ? "border-primary bg-primary/5" : "border-input hover:border-foreground/30"}
-            `}
-          >
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFile(e.target.files)}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            />
-            <div className="w-10 h-10 bg-muted flex items-center justify-center">
-              <ImageIcon className="w-4 h-4 text-muted-foreground" />
-            </div>
-            <div className="text-center">
-              <p className="text-sm font-medium">Upload reference</p>
-              <p className="text-xs text-muted-foreground">PNG, JPG</p>
-            </div>
+          <div>
+            <p className="text-sm font-medium">Drop images or click to upload</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              PNG, JPG up to 10MB
+            </p>
           </div>
-        )}
+        </div>
       </div>
+
+      {/* Uploaded Image Preview */}
+      {referenceImage && (
+        <div className="relative aspect-video bg-muted group">
+          <Image src={referenceImage} alt="Reference" fill className="object-cover" />
+          <button
+            onClick={() => { URL.revokeObjectURL(referenceImage); setReferenceImage(null); }}
+            className="absolute top-1 right-1 w-5 h-5 bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <X className="w-3 h-3" />
+          </button>
+        </div>
+      )}
 
       {/* Modifications */}
       <div className="space-y-1.5">
