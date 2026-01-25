@@ -1,57 +1,30 @@
 import { signIn } from "@/auth";
+import Image from "next/image";
 
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex bg-background">
-      {/* Left side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-2/5 bg-primary p-10 flex-col justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary-foreground/10 flex items-center justify-center">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-4 h-4 text-primary-foreground"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polygon points="23 7 16 12 23 17 23 7" />
-              <rect x="1" y="5" width="15" height="14" rx="0" ry="0" />
-            </svg>
-          </div>
-          <span className="text-base font-semibold text-primary-foreground">
-            ThumbCraft
-          </span>
-        </div>
+      {/* Left side - Image with Quote */}
+      <div className="hidden  max-h-[100vh] lg:flex lg:w-1/2 xl:w-2/5 relative overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1724007889211-812f38bdf786?q=80&w=1272&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Minimalist stairs with plant"  
+          className="object-cover "
 
-        <div className="space-y-5">
-          <h1 className="text-4xl xl:text-5xl font-bold text-primary-foreground leading-tight">
-            Create thumbnails
-            <br />
-            that get clicks
-          </h1>
-          <p className="text-base text-primary-foreground/70 max-w-md">
-            AI-powered thumbnail generation for YouTube creators.
-            Describe, upload, or match any style.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-8 text-primary-foreground/60 text-sm">
-          <div>
-            <div className="text-xl font-bold text-primary-foreground">3</div>
-            <div>Creation modes</div>
-          </div>
-          <div className="w-px h-8 bg-primary-foreground/20" />
-          <div>
-            <div className="text-xl font-bold text-primary-foreground">HD</div>
-            <div>1280×720</div>
-          </div>
-          <div className="w-px h-8 bg-primary-foreground/20" />
-          <div>
-            <div className="text-xl font-bold text-primary-foreground">4</div>
-            <div>Variations</div>
-          </div>
+          height={1000}
+          width={1000}
+        />
+        
+        {/* Quote at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-black/60 to-transparent">
+          <blockquote className="text-white">
+            <p className="text-lg md:text-xl font-medium mb-2">
+              &quot;Create thumbnails that capture attention and drive clicks.&quot;
+            </p>
+            <footer className="text-sm text-white/70">
+              — ThumbCraft
+            </footer>
+          </blockquote>
         </div>
       </div>
 

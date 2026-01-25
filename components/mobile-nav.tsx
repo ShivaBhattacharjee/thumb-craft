@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ImagePlus, Layers, LogOut, Moon, Sun, PenBoxIcon, Settings } from "lucide-react";
+import { ImagePlus, Layers, LogOut, Moon, Sun, PenBoxIcon, Settings, Clock } from "lucide-react";
 import Image from "next/image";
 import { SettingsModal } from "./settings-modal";
 
@@ -109,7 +109,7 @@ export function MobileNav({ user }: MobileNavProps) {
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 mx-4 mb-4 px-6 py-0 bg-background/80 backdrop-blur-lg border border-border rounded-full flex items-center justify-between z-30 shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 mx-4 mb-4 px-4 py-0 bg-background/80 backdrop-blur-lg border border-border rounded-full flex items-center justify-between z-30 shadow-lg">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = mode === item.id;
@@ -119,7 +119,7 @@ export function MobileNav({ user }: MobileNavProps) {
               key={item.id}
               onClick={() => setMode(item.id)}
               className={`
-                flex flex-col items-center gap-1 px-3 py-2 transition-colors
+                flex flex-col items-center gap-1 px-2.5 py-2 transition-colors
                 ${isActive ? "text-foreground" : "text-muted-foreground"}
               `}
             >
@@ -131,10 +131,19 @@ export function MobileNav({ user }: MobileNavProps) {
           );
         })}
         
+        {/* History Button */}
+        <a
+          href="/history"
+          className="flex flex-col items-center gap-1 px-2.5 py-2 transition-colors text-muted-foreground"
+        >
+          <Clock className="w-6 h-6" />
+          <span className="text-xs">History</span>
+        </a>
+        
         {/* Settings Button */}
         <button
           onClick={() => setIsSettingsOpen(true)}
-          className="flex flex-col items-center gap-1 px-3 py-2 transition-colors text-muted-foreground"
+          className="flex flex-col items-center gap-1 px-2.5 py-2 transition-colors text-muted-foreground"
         >
           <Settings className="w-6 h-6" />
           <span className="text-xs">Settings</span>

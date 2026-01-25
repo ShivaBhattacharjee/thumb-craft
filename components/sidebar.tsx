@@ -5,8 +5,8 @@ import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useApp } from "./app-shell";
 import Image from "next/image";
+import Link from "next/link";
 import {
-  Sparkles,
   ImagePlus,
   Layers,
   LogOut,
@@ -15,6 +15,8 @@ import {
   Moon,
   Sun,
   Settings,
+  PenBoxIcon,
+  ArrowRight,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -49,7 +51,7 @@ const navItems = [
     id: "prompt" as const,
     label: "Text to Thumbnail",
     description: "Generate from description",
-    icon: Sparkles,
+    icon: PenBoxIcon,
   },
   {
     id: "upload" as const,
@@ -199,25 +201,43 @@ export function Sidebar({ user, className = "" }: SidebarProps) {
                 No history yet
               </div>
             ) : (
-              history.slice(0, 8).map((item) => (
-                <div
-                  key={item._id}
-                  className="group flex items-center gap-2 px-2 py-1.5 hover:bg-sidebar-accent transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs truncate">{getHistoryLabel(item)}</div>
-                    <div className="text-[10px] text-muted-foreground">
-                      {formatDate(item.createdAt)}
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => deleteHistoryItem(item._id)}
-                    className="w-6 h-6 flex items-center justify-center text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+              <>
+                {history.slice(0, 10).map((item) => (
+                  <Link
+                    key={item._id}
+                    href={`/history/${item._id}`}
+                    className="group flex items-center gap-2 px-2 py-1.5 hover:bg-sidebar-accent transition-colors"
                   >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
-                </div>
-              ))
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs truncate">{getHistoryLabel(item)}</div>
+                      <div className="text-[10px] text-muted-foreground">
+                        {formatDate(item.createdAt)}
+                      </div>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteHistoryItem(item._id);
+                      }}
+                      className="w-6 h-6 flex items-center justify-center text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </Link>
+                ))}
+                
+                {/* View More Button */}
+                {history.length > 0 && (
+                  <Link
+                    href="/history"
+                    className="flex items-center gap-2 px-2 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors mt-1"
+                  >
+                    <span>View more</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                )}
+              </>
             )}
           </div>
         </div>
